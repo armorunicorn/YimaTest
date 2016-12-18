@@ -119,7 +119,7 @@ namespace YimaTest
                 catch (Exception e)
                 {
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
             }
         }
     }

@@ -142,7 +142,9 @@ namespace YimaTest
             fz.PointList.Add(new GeoPoint(1079068250, 188523000));
             fz.PointList.Add(new GeoPoint(1080074240, 188523000));
             fz.PointList.Add(new GeoPoint(1080074240, 189285000));
-            yimaEncCtrl.ForbiddenZoneList.Add(fz);
+            //yimaEncCtrl.ForbiddenZoneList.Add(fz);
+            fz.Name = "123";
+            var ret = yimaEncCtrl.AddForbiddenZone(fz);
 
             //管道
             PipeLine p = new PipeLine();
@@ -162,7 +164,14 @@ namespace YimaTest
 
         private void TestCode()
         {
-            var a = yimaEncCtrl.GetMapInfo(0);
+            yimaEncCtrl.ShowRangingResult += YimaEncCtrl_ShowRangingResult;
+        }
+
+        private void YimaEncCtrl_ShowRangingResult(int len)
+        {
+            var d = new Dialog();
+            d.ShowDialog();
+            yimaEncCtrl.EndRanging();
         }
 
         private void YimaEncCtrl_TargetSelect(Target t)
@@ -197,13 +206,13 @@ namespace YimaTest
             yimaEncCtrl.StartPlayback();
             var p = new PlaybackSimluation(t1, t2, pt1, pt2);*/
 
-            yimaEncCtrl.StartAddPipeLine();
+            yimaEncCtrl.StartRanging();
 
         }
 
         private void MenuItem2_Click(object sender, RoutedEventArgs e)
         {
-            yimaEncCtrl.EndAddPipeLine();
+            yimaEncCtrl.EndAddForbiddenZone();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
