@@ -32,7 +32,7 @@ namespace YimaTest
         {
             InitializeComponent();
             TestCode();
-            var a = yimaEncCtrl.YimaEnc.GetGeoCoorMultiFactor();
+            /*var a = yimaEncCtrl.YimaEnc.GetGeoCoorMultiFactor();
             Target t, t2, t3, t4;
             int aisID = 0, mergeID = 0, radarID = 0, fileID = 1;
             string filename = "target{0}.txt";
@@ -128,14 +128,18 @@ namespace YimaTest
             yimaEncCtrl.RadarTargetDic.Add(t5.ID, t5);*/
 
 
-            var z = new ProtectZone(new GeoPoint(1122886720, 182840461), 500, Color.Red);
+            /*var z = new ProtectZone(new GeoPoint(1122886720, 182840461), 500, Color.Red);
             //yimaEncCtrl.ProtectZoneList.Add(z);
             z = new ProtectZone(new GeoPoint(1122886720, 182840461), 1000, Color.Blue);
             //yimaEncCtrl.ProtectZoneList.Add(z);
             z = new ProtectZone(new GeoPoint(1122886720, 182840461), 10000, Color.Orange);
             yimaEncCtrl.ProtectZoneList.Add(z);
             z = new ProtectZone(new GeoPoint(1122886720, 182840461), 20000, Color.YellowGreen);
-            yimaEncCtrl.ProtectZoneList.Add(z);
+            yimaEncCtrl.ProtectZoneList.Add(z);*/
+            yimaEncCtrl.AddProtectZone(null, 500, Color.Red, "1");
+            yimaEncCtrl.AddProtectZone(null, 1000, Color.Blue, "2");
+            yimaEncCtrl.AddProtectZone(null, 10000, Color.Orange, "3");
+            yimaEncCtrl.AddProtectZone(null, 20000, Color.YellowGreen, "4");
             ForbiddenZone fz = new ForbiddenZone();
             fz.PointList.Add(new GeoPoint(1079536200, 189854000));
             fz.PointList.Add(new GeoPoint(1079068250, 189285000));
@@ -147,32 +151,35 @@ namespace YimaTest
             var ret = yimaEncCtrl.AddForbiddenZone(fz);
 
             //管道
-            PipeLine p = new PipeLine();
+            Pipeline p = new Pipeline();
             p.PointList.Add(new GeoPoint(1072580759, 189722608));
             p.PointList.Add(new GeoPoint(1073537840, 189916000));
             p.PointList.Add(new GeoPoint(1074358100, 189261630));
             p.PointList.Add(new GeoPoint(1074519520, 189272200));
-            yimaEncCtrl.PipLineList.Add(p);
+            p.Name = "123";
+            p.width = 20;
+            yimaEncCtrl.AddPipeline(p);
 
 
             updateTargetTimer.AutoReset = true;
             updateTargetTimer.Elapsed += UpdateTargetTimer_Elapsed;
             //updateTargetTimer.Enabled = true;
             yimaEncCtrl.TargetSelect += YimaEncCtrl_TargetSelect;
+            yimaEncCtrl.AddedForbiddenZone += YimaEncCtrl_AddedForbiddenZone;
             //yimaEncCtrl.ShowTargetTrack(t2);
+        }
+
+        private void YimaEncCtrl_AddedForbiddenZone(ForbiddenZone f)
+        {
+
+            f.Name = "test";
+            //send
         }
 
         private void TestCode()
         {
-            yimaEncCtrl.ShowRangingResult += YimaEncCtrl_ShowRangingResult;
         }
 
-        private void YimaEncCtrl_ShowRangingResult(int len)
-        {
-            var d = new Dialog();
-            d.ShowDialog();
-            yimaEncCtrl.EndRanging();
-        }
 
         private void YimaEncCtrl_TargetSelect(Target t)
         {
@@ -206,18 +213,22 @@ namespace YimaTest
             yimaEncCtrl.StartPlayback();
             var p = new PlaybackSimluation(t1, t2, pt1, pt2);*/
 
-            yimaEncCtrl.StartRanging();
-
+            Target t = new Target(0, 0, 20, TargetSource.Merge);
+            t.Alarm = AlarmType.ForbiddenZone;
+            t.AlarmID = 0;
+            yimaEncCtrl.AddMergetTarget(t, 107.609384, 18.800813);
         }
 
         private void MenuItem2_Click(object sender, RoutedEventArgs e)
         {
-            yimaEncCtrl.EndAddForbiddenZone();
+            var t = yimaEncCtrl.AlarmTargetList;
+            yimaEncCtrl.DeleteMergeTarget(0);
+            t = yimaEncCtrl.AlarmTargetList;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            yimaEncCtrl.CenterMap(yimaEncCtrl.platformGeoPo.x, yimaEncCtrl.platformGeoPo.y);
+            yimaEncCtrl.CenterMap();
         }
     }
 }

@@ -52,14 +52,14 @@ namespace YimaTest
                     TrackPoint tp;
 
                     var tmp = dataStr.Split(',');
-                    d.targetRadar1.IMO = d.targetRadar2.IMO = d.targetMerge.IMO = d.targetAIS.IMO = tmp[1];
+                    d.targetRadar1.IMO = d.targetRadar2.IMO = d.targetMerge.IMO = d.targetAIS.IMO = Convert.ToInt32(tmp[1]);
                     d.targetRadar1.MIMSI = d.targetRadar2.MIMSI = d.targetMerge.MIMSI = d.targetAIS.MIMSI = tmp[2];
                     d.targetRadar1.CallSign = d.targetRadar2.CallSign = d.targetMerge.CallSign = d.targetAIS.CallSign = tmp[3];
                     d.targetRadar1.Nationality = d.targetRadar2.Nationality = d.targetMerge.Nationality = d.targetAIS.Nationality = tmp[4];
                     d.targetRadar1.Speed = d.targetRadar2.Speed = d.targetMerge.Speed = d.targetAIS.Speed = float.Parse(tmp[5]);
-                    d.targetRadar1.Heading = d.targetRadar2.Heading = d.targetMerge.Heading = d.targetAIS.Heading = 360 - int.Parse(tmp[9]);
-                    d.targetRadar1.Date = d.targetRadar2.Date = d.targetMerge.Date = d.targetAIS.Date = tmp[11];
-                    d.targetRadar1.Time = d.targetRadar2.Time = d.targetMerge.Time = d.targetAIS.Time = tmp[12];
+                    d.targetRadar1.Course = d.targetRadar2.Course = d.targetMerge.Course = d.targetAIS.Course = 360 - int.Parse(tmp[9]);
+                    //d.targetRadar1.Date = d.targetRadar2.Date = d.targetMerge.Date = d.targetAIS.Date = tmp[11];
+                    //d.targetRadar1.Time = d.targetRadar2.Time = d.targetMerge.Time = d.targetAIS.Time = tmp[12];
                     if (tmp[6] == "")
                     {
                         if (d.targetAIS.Track.Count > 0)
@@ -75,11 +75,11 @@ namespace YimaTest
                         tp = new TrackPoint(p);
                         d.targetMerge.Track.Add(tp);
                         d.targetAIS.Track.Add(tp);
-                        tp.Heading = d.targetAIS.Heading;
-                        tp.Time = d.targetMerge.Date + " " + d.targetMerge.Time;
+                        tp.Course = d.targetAIS.Course;
+                        //tp.Time = d.targetMerge.Date + " " + d.targetMerge.Time;
                     }
 
-                    d.targetRadar1.Destination = d.targetRadar2.Destination = d.targetMerge.Destination = d.targetAIS.Destination = tmp[8];
+                    //d.targetRadar1.Destination = d.targetRadar2.Destination = d.targetMerge.Destination = d.targetAIS.Destination = tmp[8];
 
 
 
